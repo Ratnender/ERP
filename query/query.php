@@ -12,5 +12,11 @@
         Sec_group varchar(2) not null,
         foreign key (sec_group) references Sec_groups(group_id)
     );";
-    
+    $ct_attendence = "create table attendence
+    (
+        id int not null primary key,
+        l_date date not null,
+        name varchar(40) not null,
+        attendence varchar(40) not null
+    );"
 ?>
