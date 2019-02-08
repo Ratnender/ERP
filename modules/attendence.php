@@ -16,6 +16,7 @@
 			$temp_p_date = strtotime($p_date);
 			$p_date = date('Ymd',$temp_p_date);
 			$date_test = "select * from attendence where l_date =".$p_date.";";
+			$count = 0;
 			if($result = $conn->query($date_test))
 			{
 				$id_no = 1;
@@ -30,10 +31,10 @@
 						if($attend == NULL) break;
 						if($conn->query($tem_query) === TRUE)
 						{
-							echo "data entry successfull".$id_no."<br>";
+							$count = 1;
 						}
 						else{
-							echo "data entry failed".$conn->error;
+							$count = 2;
 						}
 						$id_no++;
 
@@ -46,15 +47,15 @@
 					{
 						$attend = $_POST[$id_no];
 						$tem_query = "insert into attendence values(".$id_no.",".$p_date.",(select name from students where id =".$id_no."),'".$attend."');";
-						echo $attend.'  attend'.$id_no.'<br>';
+						// echo $attend.'  attend'.$id_no.'<br>';
 						if($attend == NULL) break;
-						echo '<br><br>'.$tem_query.'<br><br>';
+						// echo '<br><br>'.$tem_query.'<br><br>';
 						if($conn->query($tem_query) === TRUE)
 						{
-							echo "data entry successfull".$id_no."<br>";
+							$count = 3;
 						}
 						else{
-							echo "data entry failed".$conn->error;
+							$count = 4;
 						}
 						$id_no++;
 
@@ -106,13 +107,13 @@
 					<td style = "height:1em;weidth:1em"><input type = "radio" name ="<?php echo $id?>" value = "absent"/></td>
 					<td style = "height:1em;weidth:1em"><input type = "radio" name ="<?php echo $id?>" value = "medical"/></td>
 					<td style = "height:1em;weidth:1em"><input type = "radio" name ="<?php echo $id?>" value = "on_leave"/></td>
-					<td><input class = "text-box" type = "text" name ="<?php echo $id?>" value = "" placeholder = "Another reason"/></td>
+					<td><input class = "text-box" type = "text" name ="an_<?php echo $id?>" value = "" placeholder = "Another reason"/></td>
 				</tr>
 			<?php
 			}?>
 		</table>
-		<input id = "attendence_reset" class = "btn" type = "reset" name = "reset"/>
-		<input id = "attendence_submit" class = "btn" type = "submit" name = "submit"/>
+		<input id = "attendence_reset" class = "btn" type = "reset" name = "reset" value = "Reset"/>
+		<input id = "attendence_submit" class = "btn" type = "submit" name = "submit" value = "Save"/>
 	</form>
 		<?php
 		}
@@ -121,3 +122,24 @@
 		}
 		?>
 <?php include "../php/end.php" ?>
+<script>
+	count = <?php echo $count ?>;
+	switch(count)
+	{
+		case 0:
+		window.alert('Query Failed');
+		break;
+		case 1:
+		window.alert('Update Successfull');
+		break;
+		case 2:
+		windwo.alert('Update Failed');
+		break;
+		case 3:
+		window.alert('New Entry added');
+		break;
+		case 4:
+		window.alert('New Entry Failed');
+		break;
+	}
+</script>
