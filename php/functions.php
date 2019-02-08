@@ -3,10 +3,10 @@
         {
             if($conn->connect_error)
             {
-                echo "Connection error".$conn->connect_error;
+                die("Connection error" .$conn->connect_error);
             }
             else{
-                echo "Connection successfull";
+                echo '<strong>Connection successfull</strong>';
             }
         }
     function exec_query($query)
