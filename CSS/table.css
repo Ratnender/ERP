@@ -23,7 +23,7 @@ th{
     padding: 18px;
 
 }
-.odd{
+.even{
     background-color:#e7e4e4;
 }
 .text-box{
@@ -61,7 +61,7 @@ th{
 .btn:active{
     background-color:rgb(10, 23, 78);
 }
-#attendence_submit{
+#attendence_save{
     float: right;
     margin-right:25px;
     margin-top:30px;
@@ -81,4 +81,16 @@ th{
 }
 #attendence_reset:active{
     background-color:rgb(180, 3, 3);
+}
+div#status{
+    text-align: center;
+    padding:25px;
+    font-size: 25px;
+    color:green;
+}
+#search_btn{
+    margin-left:20px;
+}
+.lbl{
+    margin-left: 15px;
 }
