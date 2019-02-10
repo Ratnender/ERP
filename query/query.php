@@ -18,5 +18,5 @@
         l_date date not null,
         name varchar(40) not null,
         attendence varchar(40) not null
-    );"
+    );";
 ?>
