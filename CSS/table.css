@@ -1,1 +1,96 @@
-<!--Upload your code here varun and shakshi-->
+/* Uploaded by SID */
+
+table,tr,th,td{
+    border:1px solid #dddddd;
+    border-collapse: collapse;
+}
+table{
+    width: 100%;
+    margin-top:25px;
+}
+td{
+    text-align: center;
+}
+.odd,.even{
+    padding: 10px;
+}
+.odd:hover,.even:hover{
+    background-color:rgb(192, 189, 189);
+}
+th{
+    background-color: black;
+    color: white;
+    padding: 18px;
+
+}
+.even{
+    background-color:#e7e4e4;
+}
+.text-box{
+    width:70%;
+    padding:5px;
+    margin: 2px;
+}
+.choice_area{
+    background-color:#bdb6e9;
+    border-radius: 25px;
+    padding: 15px;
+    font-weight: bold;
+    font-size:20px;
+}
+.choice_box{
+    padding:10px;
+    border-radius: 12px;
+    background-color:white;
+    color:black;
+    outline:none;
+}
+.btn{
+    padding: 10px;
+    background-color:rgb(86, 65, 182);
+    border-radius: 25px;
+    cursor: pointer;
+    color:white;
+    border:none;
+    outline: none;
+    font-weight: bold;
+}
+.btn:hover{
+    background-color:rgb(51, 29, 151);
+}
+.btn:active{
+    background-color:rgb(10, 23, 78);
+}
+#attendence_save{
+    float: right;
+    margin-right:25px;
+    margin-top:30px;
+    width:100px;
+    margin-bottom:30px;
+}
+#attendence_reset{
+    background-color:rgb(248, 38, 38);
+    float:right;
+    margin-right:50px;
+    margin-top:30px;
+    width:100px;
+    margin-bottom: 30px;
+}
+#attendence_reset:hover{
+    background-color:rgb(223, 5, 5);
+}
+#attendence_reset:active{
+    background-color:rgb(180, 3, 3);
+}
+div#status{
+    text-align: center;
+    padding:25px;
+    font-size: 25px;
+    color:green;
+}
+#search_btn{
+    margin-left:20px;
+}
+.lbl{
+    margin-left: 15px;
+}
