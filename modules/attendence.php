@@ -25,7 +25,6 @@
 			if($result = $conn->query($date_test))
 			{
 				$id_no = $_POST['first_id'];
-				$last_id_no = 0;
 				$get_date = $result->fetch_assoc();
 				$test_date = $get_date['l_date'];
 				if(!is_null($test_date))			//Check if there is a previous record or not
@@ -46,7 +45,6 @@
 						$remark = $_POST[$temp];
 						$tem_query = "update attendence set attendence ='".$attend."',remark = '".$remark."' where id =".$id_no." and l_date=".$p_date.";";
 						if($attend == NULL){
-							$last_id_no = $id_no -1;
 							 break;
 						}
 						if($conn->query($tem_query) === TRUE)
@@ -80,7 +78,6 @@
 						$tem_query = "insert into attendence values(".$id_no.",".$p_date.",(select name from students where id =".$id_no."),'".$attend."','".$remark."');";
 						// echo $attend.'  attend'.$id_no.'<br>';
 						if($attend == NULL) {
-							$last_id_no = $id_no -1;
 							break;
 						}
 						// echo '<br><br>'.$tem_query.'<br><br>';
