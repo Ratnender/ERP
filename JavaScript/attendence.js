@@ -36,14 +36,24 @@ function firstClick(){
 }
 function src_clr_change()
     {
-        document.getElementById('search_btn').style.backgroundColor = "rgb(248, 38, 38)";
+        document.getElementById('search_btn').style.backgroundColor = "rgb(5, 161, 5)";
     }
-function change_selection()
+function show_status(entry,hide)
 {
-    var x = document.getElementById('all_selection');
-    var y = document.getElementById()
-    if(x.value == 'present')
+    if(hide == 0)
     {
-        document.getElementById()
+        document.getElementById('record_status').innerHTML = "Search to Enter or Update any record";
+        document.getElementById('record_status').style.color = "rgba(4, 82, 134, 0.979)";
+    }
+    else{
+        if (entry  == 1){
+            document.getElementById('record_status').innerHTML = "Update existing record";
+            document.getElementById('record_status').style.color = "red";
+                
+        }
+        else{
+            document.getElementById('record_status').innerHTML = "Enter new record";
+            document.getElementById('record_status').style.color = "green";
+        }
     }
 }

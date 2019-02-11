@@ -22,10 +22,10 @@
 			inner join students as s on a.id = s.id
 			where l_date ='.$p_date.' and sec_group = "'.$sec.'";';   //Query for checking if there is a existing record or not
 			$count = 0;$btn_check= 0;
-			$last_id = 0;
 			if($result = $conn->query($date_test))
 			{
 				$id_no = $_POST['first_id'];
+				$last_id_no = 0;
 				$get_date = $result->fetch_assoc();
 				$test_date = $get_date['l_date'];
 				if(!is_null($test_date))			//Check if there is a previous record or not
@@ -37,7 +37,10 @@
 						$temp = "r_".$id_no;
 						$remark = $_POST[$temp];
 						$tem_query = "update attendence set attendence ='".$attend."',remark = '".$remark."' where id =".$id_no." and l_date=".$p_date.";";
-						if($attend == NULL) break;
+						if($attend == NULL){
+							$last_id_no = $id_no -1;
+							 break;
+						}
 						if($conn->query($tem_query) === TRUE)
 						{
 							$count = 1;
@@ -60,7 +63,10 @@
 						$remark = $_POST[$temp];
 						$tem_query = "insert into attendence values(".$id_no.",".$p_date.",(select name from students where id =".$id_no."),'".$attend."','".$remark."');";
 						// echo $attend.'  attend'.$id_no.'<br>';
-						if($attend == NULL) break;
+						if($attend == NULL) {
+							$last_id_no = $id_no -1;
+							break;
+						}
 						// echo '<br><br>'.$tem_query.'<br><br>';
 						if($conn->query($tem_query) === TRUE)
 						{
@@ -104,7 +110,7 @@
 		<label class = "lbl">Enter Date:</label>
 		<input class = "choice_box" onchange = "src_clr_change()" type = "date" name = 'date' value = "<?php echo $date_value; ?>"/>
 		<label class = "lbl">Section:</label>
-		<select id = "section" onchange = src_clr_change() name = "section" onchange = "change_sec()" class = "choice_box">
+		<select id = "section" onchange = src_clr_change() name = "section" class = "choice_box">
 			<option value ="A1"<?php if ($sec == "A1"){ echo 'selected';}?>>A1</option>
 			<option value ="A2"<?php if ($sec == "A2"){ echo 'selected';}?>>A2</option>
 			<option value ="B1"<?php if ($sec == "B1"){ echo 'selected';}?>>B1</option>
@@ -112,7 +118,7 @@
 			<option value ="C1"<?php if ($sec == "C1"){ echo 'selected';}?>>C1</option>
 			<option value ="C2"<?php if ($sec == "C2"){ echo 'selected';}?>>C2</option>
 			</select>
-		<label class = "lbl">Select all as(Working on it)</label>
+		<label class = "lbl">Select all as</label>
 		<select id = "all_selection" class = "choice_box" onchange = "change_selection()">
 			<option value = "present">Present</option>
 			<option value = "absent">Absent</option>
@@ -126,7 +132,7 @@
 <div id = "record_status" style = "text-align: center;
     padding:25px;
     font-size: 25px;
-    color:green;"><p></p></div>
+    "><p></p></div>
 
 
 <!-- End of Choosing area -->
@@ -163,7 +169,7 @@
 <!-- // Checking if there is a previous record or not. -->
 
 		<?php
-		$p_date = $_POST['date'];
+			$p_date = $_POST['date'];
 			$temp_p_date = strtotime($p_date);
 			$p_date = date('Ymd',$temp_p_date);
 
@@ -171,7 +177,6 @@
 			inner join students as s on a.id = s.id
 			where l_date ='.$p_date.' and sec_group = "'.$sec.'";'; //Query for checking if there is a existing record or not
 
-			$prev_date_found = 0;
 			if($result = $conn->query($date_test))
 			{
 				$get_date = $result->fetch_assoc();
@@ -183,11 +188,12 @@
 					inner join attendence as a on s.id = a.id
 					where a.l_date = '.$p_date.' and s.sec_group = "'.$sec.'";';
 					$prev_date_found = 1;
-
+					
 					// echo 'showing attendence of '.date("d-m-Y");
 				}
 				else{
 					$student_query = 'select id,name,upper(college_roll) as college_roll,unv_roll from students where sec_group = "'.$sec.'";';
+					$prev_date_found = 0;
 					// echo 'Enter the attendence of '.date("d-m-Y");
 				}
 			}
@@ -205,6 +211,7 @@
 				$college_roll = $row['college_roll'];
 				$unv_roll = $row['unv_roll'];
 				$id = $row['id'];
+				$last_id_no = $row['id'];
 
 				if($prev_date_found == 1)  //If there is a previous record then show the previous record not the default value.
 				{
@@ -215,6 +222,7 @@
 				if($loop_count == 1) //Getting the first number of student id series
 				{
 					echo '<input type = "hidden" name = "first_id" value = "'.$id.'"/>';
+					$first_id_no = $id;
 					$loop_count+=1;
 					$loop_count++;
 				}
@@ -222,10 +230,10 @@
 				<tr <?php if($id%2 ==0) {echo "class = 'even'";}else{echo "class = 'odd'";}?>>
 					<td><?php echo $name ?></td>
 					<td><?php echo ($college_roll).' / '.$unv_roll ?></td>
-					<td><input type = "radio" name ="<?php echo $id?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'checked = "checked"';} else{echo 'checked';} ?>/></td>
-					<td><input type = "radio" name ="<?php echo $id?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'checked = "checked"';} ?>/></td>
-					<td><input type = "radio" name ="<?php echo $id?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'checked = "checked"';} ?>/></td>
-					<td><input type = "radio" name ="<?php echo $id?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'checked = "checked"';} ?>/></td>
+					<td><input type = "radio" id = "<?php echo $id.'_present';?>" name ="<?php echo $id?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'checked = "checked"';} else{echo 'checked';} ?>/></td>
+					<td><input type = "radio" id = "<?php echo $id.'_absent';?>" name ="<?php echo $id?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'checked = "checked"';} ?>/></td>
+					<td><input type = "radio" id = "<?php echo $id.'_medical';?>" name ="<?php echo $id?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'checked = "checked"';} ?>/></td>
+					<td><input type = "radio" id = "<?php echo $id.'_on_leave';?>" name ="<?php echo $id?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'checked = "checked"';} ?>/></td>
 					<td><input class = "text-box" type = "text" name ="r_<?php echo $id?>" value = "<?php if($prev_date_found == 1){echo $show_remark;}?>" placeholder = "Not listed reason"/></td>
 				</tr>
 			<?php
@@ -243,23 +251,33 @@
 	
 		?>
 	</div>
+	<script src = "../javascript/attendence.js"></script>
 	<script>
-	if (<?php echo $prev_date_found?> == 1){
-			document.getElementById('record_status').innerHTML = "Update existing record";
-			document.getElementById('record_status').style.color = "red";
-				
+
+	//Function for changing all selection 
+
+		function change_selection()
+		{
+			var sec;
+			sec = document.getElementById('all_selection').value;
+			for(i = <?php echo $first_id_no ?>; i<= <?php echo $last_id_no ?>; i++)
+			{
+				var temp = i + "_" + sec;
+				document.getElementById(temp).checked = 'checked';
+			}
 		}
-	else if(<?php echo $hide_form ?>== 0 ){
-				
-		document.getElementById('record_status').innerHTML = "Search to Enter or Update any record";
-		document.getElementById('record_status').style.color = "rgba(4, 82, 134, 0.979)";
-	}
-	else{
-		document.getElementById('record_status').innerHTML = "Enter new record";
-	}
+
+	//End of function of changing all selection
+
+		// For showing the status of record
+
+		var res_prev_data_found = <?php echo $prev_date_found; ?>;
+		var res_hide_form = <?php echo $hide_form; ?>;
+		show_status(res_prev_data_found,res_hide_form);
+
+		//End of showing the status of record
 	</script>
 <?php include "../php/end.php" ?>
-<script src = "../javascript/attendence.js"></script>
 <script>
 	count = <?php echo $count ?>;
 	check_update_popup(count);
