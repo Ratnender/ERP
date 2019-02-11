@@ -330,8 +330,8 @@
 	<input id = 'present_input' type = 'hidden' name = 'present' value = '' form = 'main_form'/>
 	<input id = 'absent_input' type = 'hidden' name = 'absent' value = '' form = 'main_form'/>
 	<input id = 'other_input' type = 'hidden' name = 'other' value = '' form = 'main_form'/>
-<?php include "../php/end.php" ?>
 <script>
 	count = <?php echo $count ?>;
 	check_update_popup(count);
 </script>
+<?php include "../php/end.php" ?>
