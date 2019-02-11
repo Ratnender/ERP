@@ -99,6 +99,9 @@ div#status{
     text-align: left;
     margin-bottom: 15px;
     font-weight: bold;
+    text-decoration: underline;
+    margin-left: 2px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;   
 }
 #summary_head th{
     padding: 10px;

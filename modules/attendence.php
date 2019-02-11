@@ -34,7 +34,7 @@
 					$present = $_POST['present'];
 					$absent = $_POST['absent'];
 					$other = $_POST['other'];
-					$summary_query = "update attendence_summary set l_date = ".$p_date.",present = ".$present.",absent = ".$absent.",other = ".$other.";";
+					$summary_query = "update attendence_summary set l_date = ".$p_date.",sec_group = '".$sec."',present = ".$present.",absent = ".$absent.",other = ".$other.";";
 					if($conn->query($summary_query)=== TRUE){}
 					else{
 						echo 'summary update failed'.$conn->error;
@@ -67,7 +67,7 @@
 					$present = $_POST['present'];
 					$absent = $_POST['absent'];
 					$other = $_POST['other'];
-					$summary_query = "insert into attendence_summary(l_date,total,present,absent,other) values(".$p_date.",".$total.",".$present.",".$absent.",".$other.");";
+					$summary_query = "insert into attendence_summary(l_date,sec_group,total,present,absent,other) values(".$p_date.",'".$sec."',".$total.",".$present.",".$absent.",".$other.");";
 					if($conn->query($summary_query)=== TRUE){}
 					else{
 						echo 'summary insert failed'.$conn->error;
@@ -256,7 +256,7 @@
 			}?>
 		</table>
 		<input id = "attendence_reset" class = "btn" type = "reset" name = "reset" value = "Reset"/>
-		<input id = "attendence_save" class = "btn" type = "submit" name = "save" value = "Save"/>
+		<input id = "attendence_save" class = "btn" type = "submit" name = "save" value = "Save" onclick = "onclick_calculate()"/>
 		<table>
 			<caption id = 'summary_caption'>Attendence Summary</caption><br/><br/>
 			<tr id = 'summary_head'>
@@ -330,8 +330,8 @@
 	<input id = 'present_input' type = 'hidden' name = 'present' value = '' form = 'main_form'/>
 	<input id = 'absent_input' type = 'hidden' name = 'absent' value = '' form = 'main_form'/>
 	<input id = 'other_input' type = 'hidden' name = 'other' value = '' form = 'main_form'/>
-<?php include "../php/end.php" ?>
 <script>
 	count = <?php echo $count ?>;
 	check_update_popup(count);
 </script>
+<?php include "../php/end.php" ?>

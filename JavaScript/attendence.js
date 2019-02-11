@@ -91,9 +91,9 @@ function calculate(first,last)
 		document.getElementById('total_present').innerHTML = p_count;
 		document.getElementById('total_absent').innerHTML = a_count;
 		document.getElementById('total_other').innerHTML = m_count + l_count;
-		document.getElementById('present_per').innerHTML = (p_count *100)/(p_count + a_count + m_count + l_count);
-		document.getElementById('absent_per').innerHTML = (a_count/(p_count + a_count + m_count + l_count))*100;
-        document.getElementById('other_per').innerHTML = ((m_count + l_count)/(p_count + a_count + m_count + l_count))*100;
+		document.getElementById('present_per').innerHTML = ((p_count *100)/(p_count + a_count + m_count + l_count)).toFixed(2);
+		document.getElementById('absent_per').innerHTML = ((a_count/(p_count + a_count + m_count + l_count))*100).toFixed(2);
+        document.getElementById('other_per').innerHTML = (((m_count + l_count)/(p_count + a_count + m_count + l_count))*100).toFixed(2);
         document.getElementById('total_input').value = (p_count + a_count + m_count + l_count);
         document.getElementById('present_input').value = p_count;
         document.getElementById('absent_input').value = a_count;
