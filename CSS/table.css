@@ -94,6 +94,15 @@ div#status{
 .lbl{
     margin-left: 15px;
 }
-.l{
-    color: rgb(5, 161, 5);
+#summary_caption{
+    font-size: 25px;
+    text-align: left;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+#summary_head th{
+    padding: 10px;
+}
+#summary_data td{
+    padding:10px;
 }

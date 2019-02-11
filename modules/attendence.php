@@ -30,7 +30,15 @@
 				$test_date = $get_date['l_date'];
 				if(!is_null($test_date))			//Check if there is a previous record or not
 				{
-					$btn_check = 0;
+					$total = $_POST['total'];
+					$present = $_POST['present'];
+					$absent = $_POST['absent'];
+					$other = $_POST['other'];
+					$summary_query = "update attendence_summary set l_date = ".$p_date.",present = ".$present.",absent = ".$absent.",other = ".$other.";";
+					if($conn->query($summary_query)=== TRUE){}
+					else{
+						echo 'summary update failed'.$conn->error;
+					}
 					while (TRUE)
 					{
 						$attend = $_POST[$id_no];
@@ -55,7 +63,15 @@
 			
 				else
 				{
-					$btn_check = 1;
+					$total = $_POST['total'];
+					$present = $_POST['present'];
+					$absent = $_POST['absent'];
+					$other = $_POST['other'];
+					$summary_query = "insert into attendence_summary(l_date,total,present,absent,other) values(".$p_date.",".$total.",".$present.",".$absent.",".$other.");";
+					if($conn->query($summary_query)=== TRUE){}
+					else{
+						echo 'summary insert failed'.$conn->error;
+					}
 					while (TRUE)
 					{
 						$attend = $_POST[$id_no];
@@ -119,7 +135,7 @@
 			<option value ="C2"<?php if ($sec == "C2"){ echo 'selected';}?>>C2</option>
 			</select>
 		<label class = "lbl">Select all as</label>
-		<select id = "all_selection" class = "choice_box" onchange = "change_selection()">
+		<select id = "all_selection" class = "choice_box" onchange = "change_selection()" onclick = "onclick_calculate()">
 			<option value = "present">Present</option>
 			<option value = "absent">Absent</option>
 			<option value = "medical">Medical</option>
@@ -151,7 +167,7 @@
 	?>
 	<div id = 'data_form' <?php if($hide_form == 0){echo 'style = "visibility:hidden"';}?>> <!--Hide when there is no search action present in the page-->
 
-	<form action =<?php echo $_SERVER['PHP_SELF']?>  method = "post">
+	<form action =<?php echo $_SERVER['PHP_SELF']?>  method = "post" id = 'main_form'>
 	<!-- <form action = "../php/test.php" method = "post"> -->
 	<input type = 'hidden' name = 'date' value = "<?php if (isset($_POST['search'])){echo $_POST['date'];} else {echo date("Y-m-d");}?>"/>
 	<input type = 'hidden' name = 'section' value = "<?php if (isset($_POST['search'])){echo $_POST['section'];} else {echo "A1";}?>"/>
@@ -230,18 +246,38 @@
 				<tr <?php if($id%2 ==0) {echo "class = 'even'";}else{echo "class = 'odd'";}?>>
 					<td><?php echo $name ?></td>
 					<td><?php echo ($college_roll).' / '.$unv_roll ?></td>
-					<td><input type = "radio" id = "<?php echo $id.'_present';?>" name ="<?php echo $id?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'checked = "checked"';} else{echo 'checked';} ?>/></td>
-					<td><input type = "radio" id = "<?php echo $id.'_absent';?>" name ="<?php echo $id?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'checked = "checked"';} ?>/></td>
-					<td><input type = "radio" id = "<?php echo $id.'_medical';?>" name ="<?php echo $id?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'checked = "checked"';} ?>/></td>
-					<td><input type = "radio" id = "<?php echo $id.'_on_leave';?>" name ="<?php echo $id?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'checked = "checked"';} ?>/></td>
+					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_present';?>" name ="<?php echo $id?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'checked = "checked"';} else{echo 'checked';} ?>/></td>
+					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_absent';?>" name ="<?php echo $id?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'checked = "checked"';} ?>/></td>
+					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_medical';?>" name ="<?php echo $id?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'checked = "checked"';} ?>/></td>
+					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_on_leave';?>" name ="<?php echo $id?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'checked = "checked"';} ?>/></td>
 					<td><input class = "text-box" type = "text" name ="r_<?php echo $id?>" value = "<?php if($prev_date_found == 1){echo $show_remark;}?>" placeholder = "Not listed reason"/></td>
 				</tr>
 			<?php
 			}?>
-			<p id = 'test'></p>
 		</table>
 		<input id = "attendence_reset" class = "btn" type = "reset" name = "reset" value = "Reset"/>
 		<input id = "attendence_save" class = "btn" type = "submit" name = "save" value = "Save"/>
+		<table>
+			<caption id = 'summary_caption'>Attendence Summary</caption><br/><br/>
+			<tr id = 'summary_head'>
+				<th>Total No. of Students</th>
+				<th>Total No. of Presents</th>
+				<th>Total No. of Absents</th>
+				<th>Other</th>
+				<th>Present %</th>
+				<th>Absent %</th>
+				<th>Other %</th>
+			</tr>
+			<tr id = 'summary_data'>
+				<td id = 'total_student'></td>
+				<td id = 'total_present'></td>
+				<td id = 'total_absent'></td>
+				<td id = 'total_other'></td>
+				<td id = 'present_per'></td>
+				<td id = 'absent_per'></td>
+				<td id = 'other_per'></td>
+			</tr>
+		</table>
 	</form>
 		<?php
 		}
@@ -255,12 +291,14 @@
 	<script>
 
 	//Function for changing all selection 
-
+	
+		first = <?php echo $first_id_no ?>;
+		last = <?php echo $last_id_no ?>;
 		function change_selection()
 		{
 			var sec;
 			sec = document.getElementById('all_selection').value;
-			for(i = <?php echo $first_id_no ?>; i<= <?php echo $last_id_no ?>; i++)
+			for(i = first; i<= last; i++)
 			{
 				var temp = i + "_" + sec;
 				document.getElementById(temp).checked = 'checked';
@@ -269,14 +307,29 @@
 
 	//End of function of changing all selection
 
-		// For showing the status of record
+	// For showing the status of record
 
-		var res_prev_data_found = <?php echo $prev_date_found; ?>;
-		var res_hide_form = <?php echo $hide_form; ?>;
-		show_status(res_prev_data_found,res_hide_form);
+	var res_prev_data_found = <?php echo $prev_date_found; ?>;
+	var res_hide_form = <?php echo $hide_form; ?>;
+	show_status(res_prev_data_found,res_hide_form);
+	
+	//End of showing the status of record
 
-		//End of showing the status of record
+	//For calculating the summary
+
+		calculate(first,last);
+		function onclick_calculate()
+		{
+			calculate(first,last);
+		}
+
+	//End of calculatin summary
+
 	</script>
+	<input id = 'total_input' type = 'hidden' name = 'total' value = '' form = 'main_form'/>
+	<input id = 'present_input' type = 'hidden' name = 'present' value = '' form = 'main_form'/>
+	<input id = 'absent_input' type = 'hidden' name = 'absent' value = '' form = 'main_form'/>
+	<input id = 'other_input' type = 'hidden' name = 'other' value = '' form = 'main_form'/>
 <?php include "../php/end.php" ?>
 <script>
 	count = <?php echo $count ?>;
