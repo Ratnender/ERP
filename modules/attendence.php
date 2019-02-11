@@ -161,7 +161,7 @@
 				<th>Roll No</th>
 				<th>Present</th>
 				<th>Absent</th>
-				<th>Madical</th>
+				<th>Medical</th>
 				<th>On Leave</th>
 				<th>Remark</th>
 			</tr>
