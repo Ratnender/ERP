@@ -99,4 +99,16 @@ function calculate(first,last)
         document.getElementById('absent_input').value = a_count;
         document.getElementById('other_input').value = m_count + l_count;
 
-	}
+    }
+function check_attendence(first,last){
+    for(i = first;i<= last;i++){
+        temp = i + '_ca';
+        var z = document.getElementById(temp).innerHTML;
+        if(z < 75){
+            document.getElementById(temp).style.backgroundColor = 'rgb(255, 75, 75)'; 
+        }
+        else{
+            document.getElementById(temp).style.backgroundColor = 'rgb(58, 221, 58)';
+        }
+    }
+}

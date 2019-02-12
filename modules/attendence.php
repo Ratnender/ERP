@@ -33,7 +33,7 @@
 					$present = $_POST['present'];
 					$absent = $_POST['absent'];
 					$other = $_POST['other'];
-					$summary_query = "update attendence_summary set l_date = ".$p_date.",sec_group = '".$sec."',present = ".$present.",absent = ".$absent.",other = ".$other.";";
+					$summary_query = "update attendence_summary set l_date = ".$p_date.",sec_group = '".$sec."',present = ".$present.",absent = ".$absent.",other = ".$other." where l_date = ".$p_date." and sec_group = '".$sec."';";
 					if($conn->query($summary_query)=== TRUE){}
 					else{
 						echo 'summary update failed'.$conn->error;
@@ -172,6 +172,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Roll No</th>
+				<th>C . A %</th>
 				<th>Present</th>
 				<th>Absent</th>
 				<th>Medical</th>
@@ -213,13 +214,31 @@
 
 // End of checking previous record
 
-
+		$total_date_query = "select count(*) as total_l from attendence_summary where sec_group = '".$sec."';";
+		$present_query = "select sum(case attendence when 'present' then 1 else 0 end) as ca from attendence as a
+		inner join students as s on a.id = s.id
+		where s.sec_group = '".$sec."'
+		group by s.id;";
+		if ($result3 = $conn->query($total_date_query)){
+			$total_lecture = $result3->fetch_assoc();
+			$total_lecture = $total_lecture['total_l'];
+		}
+		else{
+			echo 'Total lecture counting failed'.$conn->query;
+		}
 		if($result = $conn->query($student_query))
 		{
 			$loop_count = 1;
+			$result1 = $conn->query($present_query);
 			while ($row = $result->fetch_assoc())  //Getting all the record of students on given date and section
 			{
-
+				if($total_lecture == 0){
+					$ca = '-';
+				}
+				else{
+					$row1 = $result1->fetch_assoc();
+					$ca = round((($row1['ca']/$total_lecture)*100),2);
+				}
 				$name = $row['name'];
 				$college_roll = $row['college_roll'];
 				$unv_roll = $row['unv_roll'];
@@ -243,6 +262,7 @@
 				<tr <?php if($id%2 ==0) {echo "class = 'even'";}else{echo "class = 'odd'";}?>>
 					<td><?php echo $name ?></td>
 					<td><?php echo ($college_roll).' / '.$unv_roll ?></td>
+					<td id = <?php echo $id.'_ca'?>><?php echo $ca ?></td>
 					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_present';?>" name ="<?php echo $id?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'checked = "checked"';} else{echo 'checked';} ?>/></td>
 					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_absent';?>" name ="<?php echo $id?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'checked = "checked"';} ?>/></td>
 					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_medical';?>" name ="<?php echo $id?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'checked = "checked"';} ?>/></td>
@@ -286,31 +306,37 @@
 	</div>
 	<script src = "../javascript/attendence.js"></script>
 	<script>
+	</script>
+
+	<script>
 
 	//Function for changing all selection 
 	
-		first = <?php echo $first_id_no ?>;
-		last = <?php echo $last_id_no ?>;
-		function change_selection()
-		{
-			var sec;
-			sec = document.getElementById('all_selection').value;
+	first = <?php echo $first_id_no ?>;
+	last = <?php echo $last_id_no ?>;
+	
+	
+	function change_selection()
+	{
+		var sec;
+		sec = document.getElementById('all_selection').value;
 			for(i = first; i<= last; i++)
 			{
 				var temp = i + "_" + sec;
 				document.getElementById(temp).checked = 'checked';
 			}
 		}
-
-	//End of function of changing all selection
-
-	// For showing the status of record
-
-	var res_prev_data_found = <?php echo $prev_date_found; ?>;
-	var res_hide_form = <?php echo $hide_form; ?>;
-	show_status(res_prev_data_found,res_hide_form);
-	
-	//End of showing the status of record
+		
+		//End of function of changing all selection
+		check_attendence(first,last);
+		
+		// For showing the status of record
+		
+		var res_prev_data_found = <?php echo $prev_date_found; ?>;
+		var res_hide_form = <?php echo $hide_form; ?>;
+		show_status(res_prev_data_found,res_hide_form);
+		
+		//End of showing the status of record
 
 	//For calculating the summary
 
@@ -319,10 +345,10 @@
 		{
 			calculate(first,last);
 		}
-
-	//End of calculatin summary
-
-	</script>
+		//End of calculatin summary
+		
+		</script>
+		
 	<input id = 'total_input' type = 'hidden' name = 'total' value = '' form = 'main_form'/>
 	<input id = 'present_input' type = 'hidden' name = 'present' value = '' form = 'main_form'/>
 	<input id = 'absent_input' type = 'hidden' name = 'absent' value = '' form = 'main_form'/>
