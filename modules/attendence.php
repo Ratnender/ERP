@@ -173,10 +173,7 @@
 				<th>Name</th>
 				<th>Roll No</th>
 				<th>C . A %</th>
-				<th>Present</th>
-				<th>Absent</th>
-				<th>Medical</th>
-				<th>On Leave</th>
+				<th>Attendence</th>
 				<th>Remark</th>
 			</tr>
 
@@ -263,11 +260,13 @@
 					<td><?php echo $name ?></td>
 					<td><?php echo ($college_roll).' / '.$unv_roll ?></td>
 					<td id = <?php echo $id.'_ca'?>><?php echo $ca ?></td>
-					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_present';?>" name ="<?php echo $id?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'checked = "checked"';} else{echo 'checked';} ?>/></td>
-					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_absent';?>" name ="<?php echo $id?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'checked = "checked"';} ?>/></td>
-					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_medical';?>" name ="<?php echo $id?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'checked = "checked"';} ?>/></td>
-					<td><input onclick = "onclick_calculate()" type = "radio" id = "<?php echo $id.'_on_leave';?>" name ="<?php echo $id?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'checked = "checked"';} ?>/></td>
-					<td><input class = "text-box" type = "text" name ="r_<?php echo $id?>" value = "<?php if($prev_date_found == 1){echo $show_remark;}?>" placeholder = "Not listed reason"/></td>
+					<td><select name ="<?php echo $id?>" id ="<?php echo $id?>_attend" class = "choice_box">
+					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_present';?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'selected = "selected"';} else{echo 'selected';} ?>>Present</option>
+					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_absent';?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'selected = "selected"';} ?>>Absent</option>
+					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_medical';?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'selected = "selected"';} ?>>Medical</option>
+					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_on_leave';?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'selected = "selected"';} ?>>On leave</option>
+				</select></td>
+				<td><input class = "text-box" type = "text" name ="r_<?php echo $id?>" value = "<?php if($prev_date_found == 1){echo $show_remark;}?>" placeholder = "Not listed reason"/></td>
 				</tr>
 			<?php
 			}?>
@@ -323,7 +322,7 @@
 			for(i = first; i<= last; i++)
 			{
 				var temp = i + "_" + sec;
-				document.getElementById(temp).checked = 'checked';
+				document.getElementById(temp).selected = 'selected';
 			}
 		}
 		
