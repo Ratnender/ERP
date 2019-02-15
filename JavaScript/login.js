@@ -1,4 +1,4 @@
-<!--Upload your code here Sunny-->
+//Upload your code here Sunny
 <script>
         $(function () {
             // Script for user function restrion on browser //
