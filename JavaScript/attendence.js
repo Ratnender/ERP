@@ -66,10 +66,10 @@ function calculate(first,last)
 			var s_absent = i + "_" + "absent";
 			var s_medical = i + '_' + 'medical';
 			var s_on_leave = i + '_' + 'on_leave';
-			present = document.getElementById(s_present).checked;
-			absent = document.getElementById(s_absent).checked;
-			medical = document.getElementById(s_medical).checked;
-			on_leave = document.getElementById(s_on_leave).checked;
+			present = document.getElementById(s_present).selected;
+			absent = document.getElementById(s_absent).selected;
+			medical = document.getElementById(s_medical).selected;
+			on_leave = document.getElementById(s_on_leave).selected;
 			if(present == true)
 			{
 				p_count++;
@@ -112,3 +112,19 @@ function check_attendence(first,last){
         }
     }
 }
+// function ca_calculate(total_l,id)
+// {
+//     var temp = id+'_ca';
+//     var ca = document.getElementById(temp).innerHTML;
+//     var present_count = (ca*total_l)/100;
+//     var p_id = id + '_present';
+//     check_present = document.getElementById(p_id).checked;
+//     if(check_present == true)
+//     {
+//         document.getElementById(temp).innerHTML = ((present_count+1)/(total_l+1))*100;
+//     }
+//     else{
+//         document.getElementById(temp).innerHTML =  ((present_count)/(total_l+1))*100;
+//     }
+
+// }
