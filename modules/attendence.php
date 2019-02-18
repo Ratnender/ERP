@@ -33,7 +33,7 @@
 					$present = $_POST['present'];
 					$absent = $_POST['absent'];
 					$other = $_POST['other'];
-					$summary_query = "update attendence_summary set l_date = ".$p_date.",sec_group = '".$sec."',present = ".$present.",absent = ".$absent.",other = ".$other." where l_date = ".$p_date." and sec_group = '".$sec."';";
+					$summary_query = "update attendence_summary set l_date = ".$p_date.",sec_group = '".$sec."',total = ".$total.",present = ".$present.",absent = ".$absent.",other = ".$other." where l_date = ".$p_date." and sec_group = '".$sec."';";
 					if($conn->query($summary_query)=== TRUE){}
 					else{
 						echo 'summary update failed'.$conn->error;
