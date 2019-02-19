@@ -23,9 +23,9 @@
     
 //db4free database
     
-    $username = "sidsql";
-    $password = "sql@9091";
-    $host = "db4free.net";
-    $database = "erptest";
-    $conn = new mysqli($host,$username,$password,$database);
+    // $username = "sidsql";
+    // $password = "sql@9091";
+    // $host = "db4free.net";
+    // $database = "erptest";
+    // $conn = new mysqli($host,$username,$password,$database);
 ?>
