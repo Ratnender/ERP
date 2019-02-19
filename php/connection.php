@@ -1,6 +1,7 @@
 <?php
+$service = 'google';
 // localhost
-switch($database){
+switch($service){
     case 'localhost':
         $username = "root";
         $password = "sql@9091";
