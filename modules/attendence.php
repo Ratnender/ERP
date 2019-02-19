@@ -1,5 +1,6 @@
 <?php include "../php/start.php" ?>
 <link href = "../CSS/table.css" rel = "stylesheet"/>
+<title>Attendence Sheet</title>
 	<center><h1>Attendence Sheet</h1></center>
 
 	<?php
