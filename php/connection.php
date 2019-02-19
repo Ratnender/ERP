@@ -18,8 +18,8 @@ switch($service){
 
 // Google database
     case 'google':
-        $username = "root";
-        $password = "siddb9091";
+        $username = "sid";
+        $password = "KH5dtAtQeGzw8q6";
         $host = "35.202.253.161";
         $database = "erp";
         break;
