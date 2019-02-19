@@ -1,28 +1,28 @@
 <?php
 $service = 'google';
-// localhost
 switch($service){
+// localhost
     case 'localhost':
         $username = "root";
         $password = "sql@9091";
         $host = "localhost";
         $database = "erp";
-        $conn = new mysqli($host,$username,$password,$database);
+        break;
 // Amazon database
     case 'aws':
         $username = "siddb";
         $password = "siddb9091";
         $host = "sidsql.c16xhakp74ff.us-east-2.rds.amazonaws.com";
         $database = "erp";
-        $conn = new mysqli($host,$username,$password,$database);
+        break;
 
 // Google database
     case 'google':
-        $username = "siddb";
+        $username = "root";
         $password = "siddb9091";
         $host = "35.202.253.161";
         $database = "erp";
-        $conn = new mysqli($host,$username,$password,$database);
+        break;
     
 //db4free database
     case 'db4free':
@@ -30,6 +30,7 @@ switch($service){
         $password = "sql@9091";
         $host = "db4free.net";
         $database = "erptest";
-        $conn = new mysqli($host,$username,$password,$database);
-}
+        break;
+    }
+    $conn = new mysqli($host,$username,$password,$database);
 ?>
