@@ -112,19 +112,19 @@ function check_attendence(first,last){
         }
     }
 }
-// function ca_calculate(total_l,id)
-// {
-//     var temp = id+'_ca';
-//     var ca = document.getElementById(temp).innerHTML;
-//     var present_count = (ca*total_l)/100;
-//     var p_id = id + '_present';
-//     check_present = document.getElementById(p_id).checked;
-//     if(check_present == true)
-//     {
-//         document.getElementById(temp).innerHTML = ((present_count+1)/(total_l+1))*100;
-//     }
-//     else{
-//         document.getElementById(temp).innerHTML =  ((present_count)/(total_l+1))*100;
-//     }
+function ca_calculate(total_l,id)
+{
+    var temp = id+'_ca';
+    var ca = document.getElementById(temp).innerHTML;
+    var present_count = (ca*total_l)/100;
+    var p_id = id + '_present';
+    check_present = document.getElementById(p_id).selected;
+    if(check_present == true)
+    {
+        document.getElementById(temp).innerHTML = ((present_count+1)/(total_l+1))*100;
+    }
+    else{
+        document.getElementById(temp).innerHTML =  ((present_count)/(total_l+1))*100;
+    }
 
-// }
+}

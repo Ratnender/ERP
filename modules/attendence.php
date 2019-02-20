@@ -1,7 +1,7 @@
 <?php include "../php/start.php" ?>
 <link href = "../CSS/table.css" rel = "stylesheet"/>
 <title>Attendence Sheet</title>
-	<center><h1>Attendence Sheet</h1></center>
+	<center><h1>Sheet</h1></center>
 
 	<?php
 
@@ -261,11 +261,11 @@
 					<td><?php echo $name ?></td>
 					<td><?php echo ($college_roll).' / '.$unv_roll ?></td>
 					<td id = <?php echo $id.'_ca'?>><?php echo $ca ?></td>
-					<td><select name ="<?php echo $id?>" id ="<?php echo $id?>_attend" class = "choice_box">
-					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_present';?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'selected = "selected"';} else{echo 'selected';} ?>>Present</option>
-					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_absent';?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'selected = "selected"';} ?>>Absent</option>
-					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_medical';?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'selected = "selected"';} ?>>Medical</option>
-					<option onclick = "onclick_calculate()" id = "<?php echo $id.'_on_leave';?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'selected = "selected"';} ?>>On leave</option>
+					<td><select name ="<?php echo $id?>" id ="<?php echo $id?>_attend" class = "choice_box" onchange = "onclick_calculate(<?php echo $id ?>)">
+					<option id = "<?php echo $id.'_present';?>" value = "present" <?php if($prev_date_found == 1 and $show_attendence == 'present'){echo 'selected = "selected"';} else{echo 'selected';} ?>>Present</option>
+					<option id = "<?php echo $id.'_absent';?>" value = "absent" <?php if($prev_date_found == 1 and $show_attendence == 'absent'){echo 'selected = "selected"';} ?>>Absent</option>
+					<option id = "<?php echo $id.'_medical';?>" value = "medical" <?php if($prev_date_found == 1 and $show_attendence == 'medical'){echo 'selected = "selected"';} ?>>Medical</option>
+					<option id = "<?php echo $id.'_on_leave';?>" value = "on_leave" <?php if($prev_date_found == 1 and $show_attendence == 'on_leave'){echo 'selected = "selected"';} ?>>On leave</option>
 				</select></td>
 				<td><input class = "text-box" type = "text" name ="r_<?php echo $id?>" value = "<?php if($prev_date_found == 1){echo $show_remark;}?>" placeholder = "Not listed reason"/></td>
 				</tr>
@@ -309,7 +309,6 @@
 	</script>
 
 	<script>
-
 	//Function for changing all selection 
 	
 	first = <?php echo $first_id_no ?>;
@@ -341,9 +340,10 @@
 	//For calculating the summary
 
 		calculate(first,last);
-		function onclick_calculate()
+		function onclick_calculate(id)
 		{
 			calculate(first,last);
+			ca_calculate(<?php echo $total_lecture ?>,id)
 		}
 		//End of calculatin summary
 		
